@@ -1,0 +1,1 @@
+print(f'\N{Waving Hand Sign} {__file__}')

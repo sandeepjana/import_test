@@ -1,0 +1,17 @@
+# Ref: https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+# If build-system is not defined, it would be set to setuptools and wheels by default.
+[build-system]
+requires = ["setuptools>=61", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pkg"
+dynamic = ["version", "dependencies"]
+
+[tool.setuptools_scm]
+write_to = "pkg/version.py"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+# requires-python = ">=3.9"
