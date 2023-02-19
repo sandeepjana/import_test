@@ -1,3 +1,5 @@
+.vscode
+
 # Gets auto created fron pip through pyproject.toml
 pkg/version.py
 
