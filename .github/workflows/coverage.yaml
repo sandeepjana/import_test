@@ -1,0 +1,45 @@
+name: Coverage
+
+on: [push]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install tox
+        run: pip install tox
+
+      - name: Run tests with coverage
+        run: tox -e coverage
+
+      - name: Generate badge
+        uses: actions-badge/generate-badge@v2.2.0
+        with:
+          score: ${{ format("%.2f", env.TOXCACHE_DIR+"/.coverage".path.coverage.percent) }}
+          style: plastic
+          label: coverage
+        id: badge
+
+      - name: Upload badge
+        uses: actions/upload-artifact@v2
+        with:
+          name: badge
+          path: ${{ github.workspace }}/badge.svg
+
+      - name: Insert badge into README.md
+        uses: dorny/paths-filter@v2.1.0
+        id: filter
+        with:
+          filters: |
+            README.md
+        run: |
+          sed -i 's|<!-- start badges -->|<!-- start badges -->\n[![Coverage](https://github.com/sandeepjana/import_test/raw/main/badge.svg)](https://github.com/sandeepjana/import_test/actions)|' README.md
