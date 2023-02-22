@@ -41,5 +41,7 @@ jobs:
         with:
           filters: |
             README.md
+
+      - name: Update README.md with coverage badge
         run: |
           sed -i 's|<!-- start badges -->|<!-- start badges -->\n[![Coverage](https://github.com/sandeepjana/import_test/raw/main/badge.svg)](https://github.com/sandeepjana/import_test/actions)|' README.md
