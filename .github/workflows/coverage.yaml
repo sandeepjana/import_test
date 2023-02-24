@@ -21,27 +21,17 @@ jobs:
       - name: Run tests with coverage
         run: tox -e coverage
 
-      - name: Generate badge
-        uses: actions-badge/generate-badge@v2.2.0
-        with:
-          score: ${{ format("%.2f", env.TOXCACHE_DIR+"/.coverage".path.coverage.percent) }}
-          style: plastic
-          label: coverage
-        id: badge
-
-      - name: Upload badge
-        uses: actions/upload-artifact@v2
-        with:
-          name: badge
-          path: ${{ github.workspace }}/badge.svg
-
-      - name: Insert badge into README.md
-        uses: dorny/paths-filter@v2.1.0
-        id: filter
-        with:
-          filters: |
-            README.md
-
-      - name: Update README.md with coverage badge
+      - name: Creating coverage folder
         run: |
-          sed -i 's|<!-- start badges -->|<!-- start badges -->\n[![Coverage](https://github.com/sandeepjana/import_test/raw/main/badge.svg)](https://github.com/sandeepjana/import_test/actions)|' README.md
+          mkdir -p coverage
+
+      - name: Coverage Badge
+        uses: tj-actions/coverage-badge-py@v1.8
+        with:
+          output: coverage/coverage.svg
+
+      - name: Publish coverage report to coverage-badge branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: coverage-badge
+          folder: coverage
